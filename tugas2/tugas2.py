@@ -45,7 +45,7 @@ def image_to_matrix(image_path, crop_box):
     return img_matrix
 
 
-image_path = 'kucing.png'  # image
+image_path = '../kucing.png'  # image
 crop_box = (70, 50, 90, 70)  # (left, upper, right, lower) dalam satuan pixel
 
 matrix = image_to_matrix(image_path, crop_box)
