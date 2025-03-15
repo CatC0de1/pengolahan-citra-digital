@@ -1,6 +1,6 @@
 import cv2
 
-img = cv2.imread('./kucing.png')
+img = cv2.imread('./images/kucing.png')
 
 # alpha = kontras, beta = kecerahan
 bright_img = cv2.convertScaleAbs(img, alpha=1.2, beta=50)
