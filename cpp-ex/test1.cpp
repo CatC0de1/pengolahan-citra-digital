@@ -4,7 +4,7 @@
 int main() {
     std::cout << "OpenCV is working!" << std::endl;
 
-    cv::Mat img = cv::imread("image.jpg");
+    cv::Mat img = cv::imread("../images/image.jpg");
     if (img.empty()) {
         std::cout << "Failed to load image!" << std::endl;
         return -1;
@@ -19,6 +19,6 @@ int main() {
 /*
 msys2 mingw64 :
 cd /c/users/arman/vsc/pcd
-g++ test.cpp -o test.exe $(pkg-config --cflags --libs opencv4)
+g++ test1.cpp -o test1.exe $(pkg-config --cflags --libs opencv4)
 ./test.exe
 */
