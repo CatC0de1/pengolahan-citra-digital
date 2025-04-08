@@ -81,7 +81,7 @@ pkg-config --modversion Qt6Core
 jika masih error, cek apakah `Qt6Core.dll` ada di `C:\msys64\mingw64\bin`. 
 
 
-#### Jika sampah sini masih lancar, selamat!!
+#### Jika sampai sini masih lancar, selamat!!
 Jika terdapat kendala diluar prediksi, hubungi [aku](https://api.whatsapp.com/send/?phone=6285859817176&text&type=phone_number&app_absent=0). Langkah selanjutnya adalah menjalankan program C++ dengan opencv4
 
 1. Cek contoh program C++ di `/cpp-ex/test1.cpp`

@@ -1,9 +1,15 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
 def image_to_matrix(image_path, crop_box):
-    # Membaca file gambar
+    # Membaca file gambar\
+
+    # jika mengguananakan relative path ('../images/kucing.png')
+    # current_dir = os.path.dirname(__file__)
+    # image_path = os.path.join(current_dir, image_path)
+    
     img = cv2.imread(image_path)
     img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -45,7 +51,7 @@ def image_to_matrix(image_path, crop_box):
     return img_matrix
 
 
-image_path = '../images/kucing.png'  # image
+image_path = './images/kucing.png'  # image
 crop_box = (70, 50, 90, 70)  # (left, upper, right, lower) dalam satuan pixel
 
 matrix = image_to_matrix(image_path, crop_box)
