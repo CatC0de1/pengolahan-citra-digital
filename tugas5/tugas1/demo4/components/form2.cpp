@@ -6,8 +6,8 @@ using namespace cv;
 
 // bit plance slicing
 void showBitPlane(const Mat& input, int bit) {
-  Mat bitPlane = (input & (1 << bit)) > 0;
-  bitPlane *= 255;
+  Mat bitPlane = (input & (1 << bit)) > 0;  // ambil bit-plane ke-n
+  bitPlane *= 255;  // mengubah nilai boolean ke 0 atau 255
   imshow("Bit-Plane Viewer", bitPlane);
 }
 

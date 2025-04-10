@@ -16,7 +16,7 @@ void onTrackbarSmoothing(int, void*) {
 
   if (kernelSize < 1) kernelSize = 1;
   Mat smoothed;
-  GaussianBlur(imageInput, smoothed, Size(kernelSize, kernelSize), sigma);
+  GaussianBlur(imageInput, smoothed, Size(kernelSize, kernelSize), sigma);  // menghasilkan blur dengan gaussian
 
   imshow("Smoothed Image", smoothed);
 }

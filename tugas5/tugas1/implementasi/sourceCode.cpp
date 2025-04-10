@@ -27,8 +27,8 @@ Mat convertToGray_Lightness(const Mat& src) {
   for(int i = 0; i < src.rows; ++i) {
     for(int j = 0; j < src.cols; ++j) {
       Vec3b pixel = src.at<Vec3b>(i, j);
-      int R = pixel[2], G = pixel[1], B = pixel[0];
-      uchar lightness = (std::max({R, G, B}) + std::min({R, G, B})) / 2;
+      int R = pixel[2], G = pixel[1], B = pixel[0];  // nilai pixel RGB diambil dari gambar dengan format BGR
+      uchar lightness = (max({R, G, B}) + min({R, G, B})) / 2;  // mencari nilai max dan min dari RGB lalu menerapkan rumus lightness
       gray.at<uchar>(i, j) = lightness;
     }
   }
@@ -46,7 +46,7 @@ Mat convertToGray_Average(const Mat& src) {
     for(int j = 0; j < src.cols; ++j) {
       Vec3b pixel = src.at<Vec3b>(i, j);
       int R = pixel[2], G = pixel[1], B = pixel[0];
-      uchar average = (R + G + B) / 3;
+      uchar average = (R + G + B) / 3;  // mencari rata-rata dari RGB (rumus average)
       gray.at<uchar>(i, j) = average;
     }
   }
@@ -64,7 +64,7 @@ Mat convertToGray_Luminosity(const Mat& src) {
     for(int j = 0; j < src.cols; ++j) {
       Vec3b pixel = src.at<Vec3b>(i, j);
       int R = pixel[2], G = pixel[1], B = pixel[0];
-      uchar luminosity = static_cast<uchar>(0.21 * R + 0.71 * G + 0.07 * B);
+      uchar luminosity = static_cast<uchar>(0.21 * R + 0.71 * G + 0.07 * B);  // menghitung luminosity dengan rumus 0.21R + 0.71G + 0.07B (sesuai dengan persepsi manusia)
       gray.at<uchar>(i, j) = luminosity;
     }
   }

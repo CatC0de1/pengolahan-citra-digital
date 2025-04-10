@@ -7,7 +7,7 @@ using namespace std;
 // subtraction
 void showSubtraction(const Mat& img1, const Mat& img2) {
   Mat result;
-  absdiff(img1, img2, result);
+  absdiff(img1, img2, result);  // menghitung selisih absolut antara dua gambar
   imshow("Hasil Subtraction", result);
 }
 

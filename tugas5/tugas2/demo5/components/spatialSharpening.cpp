@@ -16,8 +16,8 @@ void onTrackbarSharpening(int, void*) {
 
   int kernelSize = 5;
   Mat blurred, sharpened;
-  GaussianBlur(imageInput, blurred, Size(kernelSize, kernelSize), sigma);
-  addWeighted(imageInput, 1.0 + amount, blurred, -amount, 0, sharpened);
+  GaussianBlur(imageInput, blurred, Size(kernelSize, kernelSize), sigma);  // menghasilkan blur dengan gaussian utk digunakan dalam masking
+  addWeighted(imageInput, 1.0 + amount, blurred, -amount, 0, sharpened);  // menambahkan kembali detail ke gambar asli
 
   imshow("Sharpened Image", sharpened);
 }

@@ -41,7 +41,7 @@ bool histogramEqualization(const Mat& image) {
   imshow("Original Image", image);
 
   Mat equalized;
-  equalizeHist(image, equalized);
+  equalizeHist(image, equalized);  // melakukan histogram equalization
 
   showHistogram("Before Histogram Equalization", image);
 

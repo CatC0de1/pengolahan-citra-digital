@@ -93,7 +93,12 @@ int main() {
 
     if (pilihan == 1) {
       Mat img = loadSingleImage();
-      if (!img.empty()) form1(img);
+      if (!img.empty()) { // Ensure the image is valid
+        Mat gray = convertToGray(img);
+        form1(gray);
+      } else {
+        cout << "Gambar tidak valid. Kembali ke menu.\n";
+      }
     } else if (pilihan == 2) {
       Mat img = loadSingleImage();
       if (!img.empty()) form2(img);
