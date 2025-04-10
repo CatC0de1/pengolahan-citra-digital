@@ -4,6 +4,7 @@
 using namespace std;
 using namespace cv;
 
+// fungsi untuk menampilkan histogram
 void showHistogram(const string& winName, const Mat& image) {
   CV_Assert(image.type() == CV_8UC1);
 
@@ -30,22 +31,25 @@ void showHistogram(const string& winName, const Mat& image) {
   imshow(winName, histImage);
 }
 
-bool histogramEqualization(const Mat& gray) {
-  if (gray.empty() || gray.type() != CV_8UC1) {
+// histogram equalization
+bool histogramEqualization(const Mat& image) {
+  if (image.empty() || image.type() != CV_8UC1) {
     cerr << "Gambar tidak valid atau bukan grayscale.\n";
     return false;
   }
 
-  Mat equalized;
-  equalizeHist(gray, equalized);
+  imshow("Original Image", image);
 
-  showHistogram("Before Histogram Equalization", gray);
+  Mat equalized;
+  equalizeHist(image, equalized);
+
+  showHistogram("Before Histogram Equalization", image);
 
   imshow("Image After Histogram Equalization", equalized);
   showHistogram("After Histogram Equalized", equalized);
 
   while (true) {
-    int key = waitKey(30);
+    int key = waitKey(50);
     if (key == 27) {
       destroyAllWindows();
       return true;

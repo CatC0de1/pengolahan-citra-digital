@@ -10,7 +10,7 @@ void showImage(const string& winName, const Mat& img) {
   imshow(winName, img);
 }
 
-// Fungsi untuk mengubah gambar ke grayscale(jika di app.cpp tidak diubah) dan biner
+// fungsi untuk mengubah gambar ke grayscale(jika di app.cpp tidak diubah) dan biner
 Mat convertToGrayBinary(const Mat& src) {
   Mat gray, binary;
   if (src.channels() == 3)
@@ -22,28 +22,28 @@ Mat convertToGrayBinary(const Mat& src) {
   return binary;
 }
 
-// Entry Form 4
+// entry form4
 bool form4(const Mat& img1, const Mat& img2) {
   imshow("Prepared Image 1", img1);
   imshow("Prepared Image 2", img2);
 
-  // Konversi ke biner
+  // konversi ke biner
   Mat bin1 = convertToGrayBinary(img1);
   Mat bin2 = convertToGrayBinary(img2);
 
-  // Operasi logika
+  // operasi logika
   Mat andImg, orImg, xorImg;
   bitwise_and(bin1, bin2, andImg);
   bitwise_or(bin1, bin2, orImg);
   bitwise_xor(bin1, bin2, xorImg);
 
-  // Tampilkan hasil
+  // tampilkan hasil
   showImage("Logical AND", andImg);
   showImage("Logical OR", orImg);
   showImage("Logical XOR", xorImg);
 
   while (true) {
-    int key = waitKey(30);
+    int key = waitKey(50);
     if (key == 27) {
       destroyAllWindows();
       return true;

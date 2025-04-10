@@ -9,21 +9,21 @@ bool form2(const Mat& img);
 bool form3(const Mat& img1, const Mat& img2);
 bool form4(const Mat& img1, const Mat& img2);
 
-// Fungsi untuk mengubah ke grayscale
+// fungsi untuk mengubah citra ke grayscale
 Mat convertToGray(const Mat& img) {
   Mat gray;
   cvtColor(img, gray, COLOR_BGR2GRAY);
   return gray;
 }
 
-// Fungsi crop center sesuai ukuran minimum
+// fungsi crop center sesuai ukuran minimum
 Mat cropCenter(const Mat& img, Size targetSize) {
   int x = (img.cols - targetSize.width) / 2;
   int y = (img.rows - targetSize.height) / 2;
   return img(Rect(x, y, targetSize.width, targetSize.height)).clone();
 }
 
-// Fungsi penyesuaian dua gambar agar ukuran dan format sama (grayscale)
+// fungsi penyesuaian dua gambar agar ukuran dan format sama (grayscale)
 pair<Mat, Mat> prepareTwoImages(Mat img1, Mat img2) {
   img1 = convertToGray(img1);
   img2 = convertToGray(img2);
@@ -35,44 +35,46 @@ pair<Mat, Mat> prepareTwoImages(Mat img1, Mat img2) {
   return {img1, img2};
 }
 
-// Fungsi untuk memuat 1 gambar
+// fungsi untuk memuat 1 gambar
 Mat loadSingleImage() {
   string path;
-  cout << "Masukkan nama file gambar(contoh: kucing.png): ";
+  cout << "Masukkan nama file gambar(contoh: ./kucing.png): ";
   cin >> path;
-  string fullPath = "../../../images/" + path;
-  Mat img = imread(fullPath);
+  // string fullPath = "../../../images/" + path;
+  Mat img = imread(path);
   if (img.empty()) {
-    cerr << "Gagal memuat gambar: " << fullPath << endl;
+    cerr << "Gagal memuat gambar: " << path << endl;
     return Mat();
   }
 
   imshow("Original Image", img);
   cout << "Tekan ESC pada gambar untuk menutup dan kembali ke menu.\n";
+  cout << "Seret jendela gambar untuk melihat gambar yang lain.\n";
   return img;
 }
 
-// Fungsi untuk memuat 2 gambar
+// fungsi untuk memuat 2 gambar
 pair<Mat, Mat> loadTwoImages() {
   string path1, path2;
-  cout << "Masukkan file gambar ke-1 (contoh: kucing1.png): ";
+  cout << "Masukkan file gambar ke-1 (contoh: ./kucing1.png): ";
   cin >> path1;
-  cout << "Masukkan file gambar ke-2 (contoh: kucing2.png): ";
+  cout << "Masukkan file gambar ke-2 (contoh: ./kucing2.png): ";
   cin >> path2;
 
-  string fullPath1 = "../../../images/" + path1;
-  Mat img1 = imread(fullPath1);
-  string fullPath2 = "../../../images/" + path2;
-  Mat img2 = imread(fullPath2);
+  // string fullPath1 = "../../../images/" + path1;
+  // string fullpath2 = "../../../images/" + path2;
+  Mat img1 = imread(path1);
+  Mat img2 = imread(path2);
 
   if (img1.empty() || img2.empty()) {
-    cerr << "Gagal memuat gambar: " << fullPath1 << " atau " << fullPath2 << endl;
+    cerr << "Gagal memuat gambar: " << path1 << " atau " << path2 << endl;
     return {Mat(), Mat()};
   }
 
   imshow("Original Image 1", img1);
   imshow("Original Image 2", img2);
   cout << "Tekan ESC pada gambar untuk menutup dan kembali ke menu.\n";
+  cout << "Seret jendela gambar untuk melihat gambar yang lain.\n";
   return {img1, img2};
 }
 
@@ -122,6 +124,6 @@ int main() {
 
 /*
 // Compile and exceute dengan MSYS2 MinGW64
-compile: g++ app.cpp components/*.cpp -o app `pkg-config --cflags --libs opencv4`
-execute: ./app.exe
+compile: g++ app.cpp components/*.cpp -o Demo4 `pkg-config --cflags --libs opencv4`
+execute: ./Demo4.exe
 */

@@ -4,36 +4,40 @@
 using namespace std;
 using namespace cv;
 
-static Mat grayInputSmooth;
+static Mat imageInput;
 
+// fungsi untuk menangani trackbar
 void onTrackbarSmoothing(int, void*) {
   int kernelSlider = getTrackbarPos("Kernel Size", "Smoothed Image");
   int sigmaSlider = getTrackbarPos("Sigma x0.1", "Smoothed Image");
 
-  int kernelSize = kernelSlider * 2 + 1; // always odd
+  int kernelSize = kernelSlider * 2 + 1;
   double sigma = sigmaSlider / 10.0;
 
   if (kernelSize < 1) kernelSize = 1;
   Mat smoothed;
-  GaussianBlur(grayInputSmooth, smoothed, Size(kernelSize, kernelSize), sigma);
+  GaussianBlur(imageInput, smoothed, Size(kernelSize, kernelSize), sigma);
 
   imshow("Smoothed Image", smoothed);
 }
 
-bool spatialSmoothing(const Mat& gray) {
-  grayInputSmooth = gray.clone();
+// spatialSmoothing dengan Gaussian Blur
+bool spatialSmoothing(const Mat& image) {
+  imshow("Original Image", image);
+
+  imageInput = image.clone();
 
   namedWindow("Smoothed Image", WINDOW_AUTOSIZE);
   createTrackbar("Kernel Size", "Smoothed Image", NULL, 10, onTrackbarSmoothing);
-  setTrackbarPos("Kernel Size", "Smoothed Image", 2); // Default: 5
+  setTrackbarPos("Kernel Size", "Smoothed Image", 2);
 
   createTrackbar("Sigma x0.1", "Smoothed Image", NULL, 50, onTrackbarSmoothing);
-  setTrackbarPos("Sigma x0.1", "Smoothed Image", 10); // Default: 1.0
+  setTrackbarPos("Sigma x0.1", "Smoothed Image", 10);
 
   onTrackbarSmoothing(0, 0);
 
   while (true) {
-    int key = waitKey(30);
+    int key = waitKey(50);
     if (key == 27) {
       destroyAllWindows();
       return true;

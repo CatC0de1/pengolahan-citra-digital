@@ -5,6 +5,8 @@ using namespace std;
 using namespace cv;
 
 int main() {
+  cout << "\nOpenCV is working!\n" << endl;
+
   uchar data[5][4] = {
     {29, 10, 12, 13},
     {34, 12, 13, 13},
@@ -15,22 +17,42 @@ int main() {
 
   Mat input(5, 4, CV_8UC1, data); // membuat citra 5x4 8-bit single channel
 
-  // Copy input ke bentuk Mat baru (agar tidak share memory)
+  // copy input ke bentuk mat baru (agar tidak share memory)
   Mat img = input.clone();
 
-  // Filter lowpass (blur biasa)
+  // filter lowpass (blur biasa)
   Mat blurred;
   blur(img, blurred, Size(3, 3)); // kernel 3x3
 
-  // Print hasil
+  Mat input_resized, blurred_resized;
+  resize(img, input_resized, Size(200, 250), 0, 0, INTER_NEAREST);
+  resize(blurred, blurred_resized, Size(200, 250), 0, 0, INTER_NEAREST);
+
   cout << "Input Matrix:\n" << img << endl;
   cout << "\nFiltered (Lowpass - blur 3x3) Matrix:\n" << blurred << endl;
 
-  return 0;
+  imshow("Original Image (5x4)", input_resized);
+  imshow("Filtered Image (Blur 3x3)", blurred_resized);
+
+  imwrite("./output/original_image.cpp.jpg", input_resized);
+  imwrite("./output/filtered_image.cpp.jpg", blurred_resized);
+  cout << "\nCitra berhasil disimpan di folder output.\n";
+
+  cout << "Tekan ESC pada citra untuk menutup dan kembali ke menu.\n";
+  cout << "Seret jendela citra untuk melihat citra yang lain.\n";
+
+  while (true) {
+    int key = waitKey(50);
+    if (key == 27) {
+      cout << "Keluar dari program.\n";
+      destroyAllWindows();
+      return 0;
+    }
+  }  
 }
 
 /*
 msys2 mingw64 :
-g++ sourceCode.cpp -o sourceCode pkg-config --cflags --libs opencv4
-./sourceCode
+g++ sourceCode.cpp -o Latihan `pkg-config --cflags --libs opencv4`
+./Latihan
 */

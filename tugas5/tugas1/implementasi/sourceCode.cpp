@@ -4,7 +4,24 @@
 using namespace cv;
 using namespace std;
 
-// Fungsi untuk konversi grayscale menggunakan Lightness Method
+// fungsi untuk memuat gambar
+Mat loadImage() {
+  string path;
+  cout << "Masukkan nama file gambar(contoh: ./kucing.png): ";
+  cin >> path;
+  // string fullPath = "../../../images/" + path;
+  Mat img = imread(path);
+  if (img.empty()) {
+    cerr << "Gagal memuat gambar: " << path << endl;
+    return Mat();
+  }
+
+  imshow("Original Image", img);
+
+  return img;
+}
+
+// lightness method
 Mat convertToGray_Lightness(const Mat& src) {
   Mat gray(src.rows, src.cols, CV_8UC1);
   for(int i = 0; i < src.rows; ++i) {
@@ -15,10 +32,14 @@ Mat convertToGray_Lightness(const Mat& src) {
       gray.at<uchar>(i, j) = lightness;
     }
   }
+
+  imshow("Gray - Lightness Method", gray);
+  imwrite("./output/gray_lightness.cpp.jpg", gray);
+
   return gray;
 }
 
-// Fungsi untuk konversi grayscale menggunakan Average Method
+// average method
 Mat convertToGray_Average(const Mat& src) {
   Mat gray(src.rows, src.cols, CV_8UC1);
   for(int i = 0; i < src.rows; ++i) {
@@ -29,10 +50,14 @@ Mat convertToGray_Average(const Mat& src) {
       gray.at<uchar>(i, j) = average;
     }
   }
+
+  imshow("Gray - Average Method", gray);
+  imwrite("./output/gray_average.cpp.jpg", gray);
+
   return gray;
 }
 
-// Fungsi untuk konversi grayscale menggunakan Luminosity Method
+// luminosity method
 Mat convertToGray_Luminosity(const Mat& src) {
   Mat gray(src.rows, src.cols, CV_8UC1);
   for(int i = 0; i < src.rows; ++i) {
@@ -43,36 +68,38 @@ Mat convertToGray_Luminosity(const Mat& src) {
       gray.at<uchar>(i, j) = luminosity;
     }
   }
+
+  imshow("Gray - Luminosity Method", gray);
+  imwrite("./output/gray_luminosity.cpp.jpg", gray);
+
   return gray;
 }
 
 int main() {
-  cout << "OpenCV is working!" << endl;
+  cout << "\nOpenCV is working!\n" << endl;
 
-  Mat img = imread("../../../images/kucing.png");
-  if(img.empty()) {
-    cout << "Gagal memuat gambar!" << endl;
-    return -1;
-  }
+  Mat img = loadImage();
 
-  // Proses konversi
-  Mat gray_lightness = convertToGray_Lightness(img);
-  Mat gray_average = convertToGray_Average(img);
-  Mat gray_luminosity = convertToGray_Luminosity(img);
+  convertToGray_Lightness(img);
+  convertToGray_Average(img);
+  convertToGray_Luminosity(img);
 
-  // Tampilkan hasil
-  imshow("Original", img);
-  imshow("Gray - Lightness Method", gray_lightness);
-  imshow("Gray - Average Method", gray_average);
-  imshow("Gray - Luminosity Method", gray_luminosity);
-
-  // Simpan hasil konversi
-  imwrite("./output/gray_lightness.cpp.jpg", gray_lightness);
-  imwrite("./output/gray_average.cpp.jpg", gray_average);
-  imwrite("./output/gray_luminosity.cpp.jpg", gray_luminosity);
   cout << "Gambar hasil grayscale telah disimpan.\n";
+  cout << "Tekan ESC pada gambar untuk menutup dan kembali ke menu.\n";
+  cout << "Seret jendela gambar untuk melihat gambar yang lain.\n";
 
-  waitKey(0);
-  destroyAllWindows();
-  return 0;
+  while (true) {
+    int key = waitKey(50);
+    if (key == 27) {
+      cout << "Keluar dari program.\n";
+      destroyAllWindows();
+      return 0;
+    }
+  }
 }
+
+/*
+msys2 mingw64 :
+g++ sourceCode.cpp -o LatihanImplementasi `pkg-config --cflags --libs opencv4`
+./LatihanImplementasi
+*/

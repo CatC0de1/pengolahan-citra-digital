@@ -3,31 +3,33 @@
 
 using namespace cv;
 using namespace std;
+
 bool histogramEqualization(const Mat& img);
 bool spatialSharpening(const Mat& img);
 bool spatialSmoothing(const Mat& img);
 
-
+// fungsi untuk mengubah citra ke grayscale
 Mat convertToGray(const Mat& img) {
   Mat gray;
   cvtColor(img, gray, COLOR_BGR2GRAY);
-  imshow("Grayscale Image", gray);
   return gray;
 }
 
+// fungsi untuk memuat gambar
 Mat loadImage() {
   string path;
   cout << "Masukkan nama file gambar (contoh: kucing.png): ";
   cin >> path;
-  string fullpath = "../../../images/" + path;
-  Mat img = imread(fullpath);
+  // string fullpath = "../../../images/" + path;
+  Mat img = imread(path);
   if (img.empty()) {
-    cerr << "Gagal memuat gambar: " << fullpath << endl;
+    cerr << "Gagal memuat gambar: " << path << endl;
     return Mat();
   }
 
   imshow("Original Image", img);
   cout << "Tekan ESC pada gambar untuk menutup dan kembali ke menu.\n";
+  cout << "Seret jendela gambar untuk melihat gambar yang lain.\n";
   return img;
 }
 
@@ -75,6 +77,6 @@ int main() {
 
 /*
 // Compile and exceute dengan MSYS2 MinGW64
-compile: g++ app.cpp components/*.cpp -o app `pkg-config --cflags --libs opencv4`
-execute: ./app
+compile: g++ app.cpp components/*.cpp -o Demo5 `pkg-config --cflags --libs opencv4`
+execute: ./Demo5
 */

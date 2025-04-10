@@ -4,14 +4,14 @@
 using namespace std;
 using namespace cv;
 
-// Fungsi untuk menampilkan bit-plane dari gambar grayscale
+// bit plance slicing
 void showBitPlane(const Mat& input, int bit) {
   Mat bitPlane = (input & (1 << bit)) > 0;
   bitPlane *= 255;
   imshow("Bit-Plane Viewer", bitPlane);
 }
 
-// Fungsi untuk menampilkan GUI untuk memilih bit-plane
+// fungsi untuk menampilkan trackbar bit-plane
 void showBitPlaneGUI(const Mat& input) {
   namedWindow("Bit-Plane Viewer", WINDOW_AUTOSIZE);
   createTrackbar("Bit (0-7)", "Bit-Plane Viewer", NULL, 7, [](int, void* userdata) {
@@ -23,7 +23,7 @@ void showBitPlaneGUI(const Mat& input) {
   showBitPlane(input, 0);
 }
 
-// Entry Form2
+// entry form2
 bool form2(const Mat& inputImage) {
   Mat grayImage;
   if (inputImage.channels() == 3) {
@@ -35,7 +35,7 @@ bool form2(const Mat& inputImage) {
   showBitPlaneGUI(grayImage);
 
   while (true) {
-    int key = waitKey(30);
+    int key = waitKey(50);
     if (key == 27) {
       destroyAllWindows();
       return true;

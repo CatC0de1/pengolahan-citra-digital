@@ -4,13 +4,13 @@
 using namespace std;
 using namespace cv;
 
-// Image Negative
+// image negative
 void showNegative(const Mat& input) {
   Mat negativeImage = 255 - input;
   imshow("1. Image Negative", negativeImage);
 }
 
-// Log Transform
+// log transform
 void showLogTransform(const Mat& input) {
   Mat logImage;
   input.convertTo(logImage, CV_32F);
@@ -21,9 +21,10 @@ void showLogTransform(const Mat& input) {
   imshow("2. Log Transform", logImage);
 }
 
-// Gamma Transform (Power-Law)
+// gamma transform (power-law)
 int gammaSlider = 100;
 
+// fungsi untuk menangani trackbar gamma transform
 void onGammaChange(int, void* userdata) {
   Mat* originalImg = static_cast<Mat*>(userdata);
   int sliderVal = getTrackbarPos("Gamma x0.01", "3. Gamma Transform (Power-Law)");
@@ -37,6 +38,7 @@ void onGammaChange(int, void* userdata) {
   imshow("3. Gamma Transform (Power-Law)", gammaImage);
 }
 
+// fungsi untuk menampilkan trackbar gamma transform
 void showGammaGUI(const Mat& input) {
   namedWindow("3. Gamma Transform (Power-Law)", WINDOW_AUTOSIZE);
   createTrackbar("Gamma x0.01", "3. Gamma Transform (Power-Law)", NULL, 300, onGammaChange, (void*)&input);
@@ -44,9 +46,10 @@ void showGammaGUI(const Mat& input) {
   onGammaChange(0, (void*)&input);
 }
 
-// Piecewise Linear Transform
+// piecewise linear transform
 int r1 = 70, r2 = 140, s1 = 0, s2 = 255;
 
+// fungsi untuk menangani trackbar piecewise linear transform
 void onPiecewiseChange(int, void* userdata) {
   Mat* originalImg = static_cast<Mat*>(userdata);
   int local_r1 = getTrackbarPos("r1", "4. Piecewise Linear");
@@ -71,6 +74,7 @@ void onPiecewiseChange(int, void* userdata) {
   imshow("4. Piecewise Linear", piecewiseImage);
 }
 
+// fungsi untuk menampilkan trackbar piecewise linear transform
 void showPiecewiseGUI(const Mat& input) {
   namedWindow("4. Piecewise Linear", WINDOW_AUTOSIZE);
   createTrackbar("r1", "4. Piecewise Linear", NULL, 255, onPiecewiseChange, (void*)&input);
@@ -85,7 +89,7 @@ void showPiecewiseGUI(const Mat& input) {
   onPiecewiseChange(0, (void*)&input);
 }
 
-// Entry Form1
+// entry form1
 bool form1(const Mat& input) {
   showNegative(input);
   showLogTransform(input);
@@ -93,7 +97,7 @@ bool form1(const Mat& input) {
   showPiecewiseGUI(input);
 
   while (true) {
-    int key = waitKey(30);
+    int key = waitKey(50);
     if (key == 27) {
       destroyAllWindows();
       return true;
