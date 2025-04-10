@@ -1,5 +1,6 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 using namespace cv;
@@ -37,6 +38,21 @@ int main() {
   imwrite("./output/original_image.cpp.jpg", input_resized);
   imwrite("./output/filtered_image.cpp.jpg", blurred_resized);
   cout << "\nCitra berhasil disimpan di folder output.\n";
+
+  ofstream txtFile("./output/filtered_matrix.cpp.txt");
+  if (txtFile.is_open()) {
+    for (int i = 0; i < blurred.rows; ++i) {
+      for (int j = 0; j < blurred.cols; ++j) {
+        txtFile << static_cast<int>(blurred.at<uchar>(i, j));
+        if (j != blurred.cols - 1) txtFile << "\t";
+      }
+      txtFile << "\n";
+    }
+    txtFile.close();
+    cout << "Matrix hasil filter berhasil disimpan ke './output/filtered_matrix.cpp.txt'\n";
+  } else {
+    cerr << "Gagal membuka file untuk menulis matrix.\n";
+  }
 
   cout << "Tekan ESC pada citra untuk menutup dan kembali ke menu.\n";
   cout << "Seret jendela citra untuk melihat citra yang lain.\n";
