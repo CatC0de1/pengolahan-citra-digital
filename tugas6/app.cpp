@@ -1,4 +1,5 @@
 #include <iostream>
+#include <windows.h>
 #include <opencv2/opencv.hpp>
 #include "components/header.hpp"
 
@@ -24,6 +25,8 @@ Mat loadImage() {
 }
 
 int main() {
+  SetDllDirectoryA("deploy");
+
   int pilihan;
   while (true) {
     cout << "\n\n=== Menu Form Pengolahan Citra Digital (Demo Pertemuan 6) ===\n";
@@ -74,3 +77,20 @@ int main() {
   destroyAllWindows();
   return 0;
 }
+
+
+/*
+compile via MSYS2 MinGW64:
+g++ app.cpp components/*.cpp -o Demo6 `pkg-config --cflags --libs opencv4`
+
+execute via MSYS2 MinGW64:
+./Demo6
+
+deploy dinamyc linking via MSYS2 MinGW64:
+
+mkdir -p libs
+
+for dll in $(ldd Demo6 | grep "=>" | awk '{print $3}'); do
+  cp "$dll" libs/
+done
+*/
