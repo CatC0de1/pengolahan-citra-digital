@@ -25,7 +25,7 @@ Mat loadImage() {
 }
 
 int main() {
-  SetDllDirectoryA("deploy");
+  SetDllDirectoryA("libs");
 
   int pilihan;
   while (true) {
