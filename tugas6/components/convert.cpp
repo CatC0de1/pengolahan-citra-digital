@@ -1,21 +1,25 @@
-#include "header.hpp" // Include the header file
+#include "header.hpp"
 #include <iostream>
 #include <opencv2/opencv.hpp>
 
 using namespace std;
 using namespace cv;
 
-// RGB ke CMY: C = 1 - R, M = 1 - G, Y = 1 - B
-Mat convertToCmy(const Mat& image) {
-  Mat imageRGB;
-  image.convertTo(imageRGB, CV_32F, 1.0 / 255.0); // konversi ke float untuk operasi aritmatika
 
-  // memisahkan kanal warna RGB
-  vector<Mat> rgbChannels;
-  split(imageRGB, rgbChannels);  // memisahkan kanal warna
-  Mat c = 1.0 - rgbChannels[2];  // C = 1 - R
-  Mat m = 1.0 - rgbChannels[1];  // M = 1 - G
-  Mat y = 1.0 - rgbChannels[0];  // Y = 1 - B
+// RGB ke CMY: 
+// C = 1 - R, 
+// M = 1 - G, 
+// Y = 1 - B
+Mat convertToCmy(const Mat& image) {
+  Mat imageBGR;
+  image.convertTo(imageBGR, CV_32F, 1.0 / 255.0); // konversi ke float untuk operasi aritmatika
+
+  // memisahkan kanal warna BGR
+  vector<Mat> bgrChannels;
+  split(imageBGR, bgrChannels);  // memisahkan kanal warna
+  Mat c = 1.0 - bgrChannels[2];  // C = 1 - R
+  Mat m = 1.0 - bgrChannels[1];  // M = 1 - G
+  Mat y = 1.0 - bgrChannels[0];  // Y = 1 - B
 
   // menggabungkan kembali kanal CMY dalam urutan BGR
   vector<Mat> cmyChannels = { y, m, c };
@@ -27,25 +31,27 @@ Mat convertToCmy(const Mat& image) {
   return cmy;
 }
 
-// RGB ke CMYK: C = 1 - R, M = 1 - G, Y = 1 - B, K = min(C, M, Y)
+
+// RGB ke CMYK:
+// K = 1 - max(R, G, B)
+// C = (1 - R - K) / (1 - K)
+// M = (1 - G - K) / (1 - K)
+// Y = (1 - B - K) / (1 - K)
 Mat convertToCmyk(const Mat& image) {
-  Mat imageRGB;
-  image.convertTo(imageRGB, CV_32F, 1.0 / 255.0);  // konversi ke float untuk operasi aritmatika
+  Mat imageBGR;
+  image.convertTo(imageBGR, CV_32F, 1.0 / 255.0);  // konversi ke float untuk operasi aritmatika
 
   // memisahkan kanal warna RGB
-  vector<Mat> rgbChannels;
-  split(imageRGB, rgbChannels);  // memisahkan kanal warna
-  Mat R = rgbChannels[2];
-  Mat G = rgbChannels[1];
-  Mat B = rgbChannels[0];
+  vector<Mat> bgrChannel;
+  split(imageBGR, bgrChannel);  // memisahkan kanal warna
 
   // menghitung kanal K
-  Mat K = 1 - max(max(R, G), B);
+  Mat K = 1 - max(max(bgrChannel[2], bgrChannel[1]), bgrChannel[0]);
 
   // menghitung kanal C, M, Y
-  Mat C = (1 - R - K) / (1 - K + 1e-8);
-  Mat M = (1 - G - K) / (1 - K + 1e-8);
-  Mat Y = (1 - B - K) / (1 - K + 1e-8);
+  Mat C = (1 - bgrChannel[2] - K) / (1 - K + 1e-8);
+  Mat M = (1 - bgrChannel[1] - K) / (1 - K + 1e-8);
+  Mat Y = (1 - bgrChannel[0] - K) / (1 - K + 1e-8);
 
   // konversi ke 8-bit untuk ditampilkan
   C.convertTo(C, CV_8UC1, 255.0);
@@ -67,6 +73,7 @@ Mat convertToCmyk(const Mat& image) {
 
   return Mat();
 }
+
 
 // RGB ke HSI: H = Hue, S = Saturation, I = Intensity (manual, kecuali jika HSV)
 Mat convertToHsi(const Mat& image) {
@@ -115,10 +122,14 @@ Mat convertToHsi(const Mat& image) {
   return hsi;
 }
 
-// RGB ke YUV: Y = 0.299R + 0.587G + 0.114B, U = 0.492(B - Y), V = 0.877(R - Y)
+
+// RGB ke YUV: 
+// Y = 0.299R + 0.587G + 0.114B, 
+// U = 0.492(B - Y), 
+// V = 0.877(R - Y)
 Mat convertToYuv(const Mat& image) {
   Mat yuv;
-  cvtColor(image, yuv, COLOR_RGB2YUV);
+  cvtColor(image, yuv, COLOR_BGR2YUV);
 
   // memisahkan kanal Y, U, V
   vector<Mat> yuvChannels;
@@ -133,10 +144,14 @@ Mat convertToYuv(const Mat& image) {
   return yuv;
 }
 
-// RGB ke YCbCr: Y = 0.299R + 0.587G + 0.114B, Cb = 128 - 0.168736R - 0.331364G + 0.5B, Cr = 128 + 0.5R - 0.418688G - 0.081312B
+
+// RGB ke YCbCr:
+// R = Y + 1.402 * (Cr - 128)
+// G = Y - 0.344136 * (Cb - 128) - 0.714136 * (Cr - 128)
+// B = Y + 1.772 * (Cb - 128)
 Mat convertToYcbcr(const Mat& image) {
   Mat ycbcr;
-  cvtColor(image, ycbcr, COLOR_RGB2YCrCb);
+  cvtColor(image, ycbcr, COLOR_BGR2YCrCb);
 
   // memisahkan kanal Y, Cb, Cr
   vector<Mat> ycbcrChannels;
@@ -151,26 +166,24 @@ Mat convertToYcbcr(const Mat& image) {
   return ycbcr;
 }
 
+
 // entry point untuk konversi model warna
 bool convert(const Mat& image, int pilihan) {
-  Mat imageRGB;
-  cvtColor(image, imageRGB, COLOR_BGR2RGB);
-
   switch (pilihan) {
     case 1:
-      convertToCmy(imageRGB);
+      convertToCmy(image);
       break;
     case 2:
-      convertToCmyk(imageRGB);
+      convertToCmyk(image);
       break;
     case 3:
-      convertToHsi(imageRGB);
+      convertToHsi(image);
       break;
     case 4:
-      convertToYuv(imageRGB);
+      convertToYuv(image);
       break;
     case 5:
-      convertToYcbcr(imageRGB);
+      convertToYcbcr(image);
       break;
   }
 
