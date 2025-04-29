@@ -25,11 +25,10 @@ void saveFilteredMatrix(const Mat& matrix, const string& filename) {
 }
 
 int main() {
-  // Konversi citra biner ke Mat
-  Mat inputMat(ROWS, COLS, CV_8UC1);
-  for (int i = 0; i < ROWS; ++i)
-    for (int j = 0; j < COLS; ++j)
-      inputMat.at<uchar>(i, j) = binaryImage[i][j] * 255; // konversi ke 0 dan 255
+  cout << "\nOpenCV is working!\n\n";
+
+  // citra biner dari konversi binaryImage
+  Mat inputMat = binaryImage * 255 ; // Konversi ke citra biner (0 atau 255)
 
   // Structuring element 3x3 
   // [{1, 1, 1},
@@ -69,7 +68,7 @@ int main() {
   cout << "Seret jendela citra untuk melihat citra yang lain.\n";
 
   while (true) {
-    int key = waitKey(0);
+    int key = waitKey(50);
     if (key == 27) { // ESC key
       cout << "Keluar dari program.\n";
       destroyAllWindows();
